@@ -1,5 +1,6 @@
 package com.mu.necoshoppinglist.navigation
 
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -12,23 +13,24 @@ import com.mu.necoshoppinglist.utils.Routes
 
 @Composable
 fun NavGraph(
-    navController: NavHostController
+    navController: NavHostController,
+    paddingValues: PaddingValues
 ) {
     NavHost(
         navController = navController,
         startDestination = Routes.SHOPPING_LIST
     ) {
         composable(Routes.SHOPPING_LIST) {
-            ShoppingListScreen()
+            ShoppingListScreen(paddingValues)
         }
         composable(Routes.NOTE_LIST) {
-            NoteListScreen()
+            NoteListScreen(paddingValues)
         }
         composable(Routes.ABOUT) {
-            AboutScreen()
+            AboutScreen(paddingValues)
         }
         composable(Routes.SETTINGS) {
-            SettingsScreen()
+            SettingsScreen(paddingValues)
         }
     }
 }

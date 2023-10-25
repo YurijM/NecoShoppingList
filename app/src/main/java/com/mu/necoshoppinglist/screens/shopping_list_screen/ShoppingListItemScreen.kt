@@ -26,17 +26,16 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
+import com.mu.necoshoppinglist.data.entity.ShoppingListItemEntity
+import com.mu.necoshoppinglist.ui.theme.BlueLight
 import com.mu.necoshoppinglist.ui.theme.BlueMain
-import com.mu.necoshoppinglist.ui.theme.DarkText
 import com.mu.necoshoppinglist.ui.theme.LightText
 
-@Preview(showBackground = true)
 @Composable
-fun ShoppingListItemScreen() {
+fun ShoppingListItemScreen(item: ShoppingListItemEntity) {
     ConstraintLayout(
         modifier = Modifier
             .fillMaxWidth()
@@ -55,7 +54,11 @@ fun ShoppingListItemScreen() {
                     start.linkTo(parent.start)
                     end.linkTo(parent.end)
                 }
-                .padding(bottom = 4.dp)
+                .padding(bottom = 4.dp),
+            colors = CardDefaults.cardColors(
+                containerColor = BlueLight,
+                contentColor = BlueMain
+            )
         ) {
             Column(
                 modifier = Modifier
@@ -63,15 +66,15 @@ fun ShoppingListItemScreen() {
                     .padding(8.dp)
             ) {
                 Text(
-                    text = "List 1",
+                    text = item.name,
                     style = TextStyle(
-                        color = DarkText,
+                        //color = DarkText,
                         fontWeight = FontWeight.Bold,
                         fontSize = 20.sp
                     )
                 )
                 Text(
-                    text = "01.10.2023 12:00",
+                    text = item.time,
                     style = TextStyle(
                         color = LightText,
                         fontSize = 16.sp
@@ -81,7 +84,13 @@ fun ShoppingListItemScreen() {
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(top = 4.dp),
-                    trackColor = BlueMain
+                    color = BlueMain,
+                    trackColor = Color.LightGray,
+                    progress = if (item.allItemsCount == 0) {
+                        0f
+                    } else {
+                        item.allSelectedItemsCount.toFloat() / item.allItemsCount.toFloat()
+                    }
                 )
             }
         }
@@ -105,7 +114,7 @@ fun ShoppingListItemScreen() {
             ) {
                 Text(
                     modifier = Modifier.padding(4.dp),
-                    text = "15 / 15"
+                    text = "${item.allItemsCount} / ${item.allSelectedItemsCount}"
                 )
             }
             Spacer(modifier = Modifier.width(12.dp))
@@ -120,7 +129,7 @@ fun ShoppingListItemScreen() {
                 onClick = {}
             ) {
                 Icon(
-                    modifier = Modifier.size(16.dp),
+                    modifier = Modifier.size(20.dp),
                     imageVector = Icons.Default.Edit,
                     contentDescription = "Delete"
                 )
@@ -137,7 +146,7 @@ fun ShoppingListItemScreen() {
                 onClick = {}
             ) {
                 Icon(
-                    modifier = Modifier.size(16.dp),
+                    modifier = Modifier.size(20.dp),
                     imageVector = Icons.Default.Delete,
                     contentDescription = "Delete"
                 )

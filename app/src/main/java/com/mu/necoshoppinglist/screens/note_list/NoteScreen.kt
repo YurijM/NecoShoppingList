@@ -1,5 +1,6 @@
 package com.mu.necoshoppinglist.screens.note_list
 
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentWidth
@@ -8,7 +9,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 
 @Composable
-fun NoteListScreen() {
+fun NoteListScreen(
+    paddingValues: PaddingValues
+) {
     Text(
         modifier = Modifier
             .fillMaxSize()

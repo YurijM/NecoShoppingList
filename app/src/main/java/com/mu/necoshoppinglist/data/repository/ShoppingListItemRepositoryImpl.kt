@@ -15,7 +15,7 @@ class ShoppingListItemRepositoryImpl(
         dao.deleteItem(item)
     }
 
-    override fun getAllItems(): Flow<ShoppingListItemEntity> {
+    override fun getAllItems(): Flow<List<ShoppingListItemEntity>> {
         return dao.getAllItems()
     }
 }

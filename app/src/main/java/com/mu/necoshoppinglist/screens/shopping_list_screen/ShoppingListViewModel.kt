@@ -18,19 +18,20 @@ import javax.inject.Inject
 class ShoppingListViewModel @Inject constructor(
     private val repository: ShoppingListItemRepository
 ) : ViewModel(), DialogController {
-    private val list = repository.getAllItems()
+    val list = repository.getAllItems()
+
     private var item: ShoppingListItemEntity? = null
 
     private val _uiEvent = Channel<UiEvent>()
     val uiEvent = _uiEvent.receiveAsFlow()
 
-    override var dialogTitle = mutableStateOf("Test")
+    override var dialogTitle = mutableStateOf("")
         private set
     override var editableText = mutableStateOf("")
         private set
-    override var openDialog = mutableStateOf(true)
+    override var openDialog = mutableStateOf(false)
         private set
-    override var showEditableText = mutableStateOf(true)
+    override var showEditableText = mutableStateOf(false)
         private set
 
     override fun onDialogEvent(event: DialogEvent) {
@@ -47,9 +48,11 @@ class ShoppingListViewModel @Inject constructor(
                     }
                 }
                 openDialog.value = false
+                editableText.value = ""
             }
             is DialogEvent.OnCancel -> {
                 openDialog.value = false
+                editableText.value = ""
             }
         }
     }

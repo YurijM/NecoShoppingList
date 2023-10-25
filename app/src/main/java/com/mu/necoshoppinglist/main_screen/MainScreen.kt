@@ -1,6 +1,5 @@
 package com.mu.necoshoppinglist.main_screen
 
-import android.annotation.SuppressLint
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FabPosition
@@ -10,15 +9,20 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.rememberNavController
 import com.mu.necoshoppinglist.R
 import com.mu.necoshoppinglist.navigation.NavGraph
+import com.mu.necoshoppinglist.screens.shopping_list_screen.ShoppingListEvent
+import com.mu.necoshoppinglist.screens.shopping_list_screen.ShoppingListViewModel
 import com.mu.necoshoppinglist.ui.theme.BlueMain
+import com.mu.necoshoppinglist.utils.dialog.MainDialog
 
 @OptIn(ExperimentalMaterial3Api::class)
-@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun MainScreen() {
+fun MainScreen(
+    viewModel: ShoppingListViewModel = hiltViewModel()
+) {
     val navController = rememberNavController()
 
     Scaffold(
@@ -30,7 +34,9 @@ fun MainScreen() {
                 containerColor = BlueMain,
                 contentColor = Color.White,
                 shape = RoundedCornerShape(50),
-                onClick = {}
+                onClick = {
+                    viewModel.onEvent(ShoppingListEvent.OnShowEditDialog(null))
+                }
             ) {
                 Icon(
                     painter = painterResource(id = R.drawable.ic_add),
@@ -40,7 +46,8 @@ fun MainScreen() {
 
         },
         floatingActionButtonPosition = FabPosition.Center
-    ) {
-        NavGraph(navController)
+    ) { paddingValues ->
+        NavGraph(navController, paddingValues)
+        MainDialog(dialogController = viewModel)
     }
 }
