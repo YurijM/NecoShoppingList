@@ -63,7 +63,7 @@ fun ShoppingListItemScreen(
                 .clickable {
                     onEvent(
                         ShoppingListEvent.OnItemClick(
-                            Routes.ADD_ITEM + "/${item.id}"
+                            Routes.ADD_ITEM_LIST + "/${item.id}"
                         )
                     )
                 },

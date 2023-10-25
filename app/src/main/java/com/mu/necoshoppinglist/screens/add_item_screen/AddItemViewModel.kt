@@ -48,7 +48,7 @@ class AddItemViewModel @Inject constructor(
         }
     }
 
-    fun onEvent() {
+    fun onEvent(event: AddItemEvent) {
 
     }
 }

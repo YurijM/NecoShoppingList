@@ -6,6 +6,6 @@ object Routes {
     const val NOTE_LIST = "note_list"
     const val ABOUT = "about"
     const val SETTINGS = "settings"
-    const val ADD_ITEM = "add_item"
+    const val ADD_ITEM_LIST = "add_item_list"
     const val NEW_NOTE = "new_note"
 }
