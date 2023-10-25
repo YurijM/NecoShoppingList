@@ -14,14 +14,17 @@ import com.mu.necoshoppinglist.utils.Routes
 @Composable
 fun NavGraph(
     navController: NavHostController,
-    paddingValues: PaddingValues
+    paddingValues: PaddingValues,
+    onNavigate: (String) -> Unit
 ) {
     NavHost(
         navController = navController,
         startDestination = Routes.SHOPPING_LIST
     ) {
         composable(Routes.SHOPPING_LIST) {
-            ShoppingListScreen(paddingValues)
+            ShoppingListScreen(paddingValues) { route ->
+                onNavigate(route)
+            }
         }
         composable(Routes.NOTE_LIST) {
             NoteListScreen(paddingValues)

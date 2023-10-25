@@ -34,12 +34,13 @@ import com.mu.necoshoppinglist.data.entity.ShoppingListItemEntity
 import com.mu.necoshoppinglist.ui.theme.BlueLight
 import com.mu.necoshoppinglist.ui.theme.BlueMain
 import com.mu.necoshoppinglist.ui.theme.LightText
+import com.mu.necoshoppinglist.utils.Routes
 
 @Composable
 fun ShoppingListItemScreen(
     item: ShoppingListItemEntity,
     onEvent: (ShoppingListEvent) -> Unit
-    ) {
+) {
     ConstraintLayout(
         modifier = Modifier
             .fillMaxWidth()
@@ -59,7 +60,9 @@ fun ShoppingListItemScreen(
                     end.linkTo(parent.end)
                 }
                 .padding(bottom = 4.dp)
-                .clickable {  },
+                .clickable {
+                           onEvent(ShoppingListEvent.OnItemClick(Routes.ADD_ITEM))
+                },
             colors = CardDefaults.cardColors(
                 containerColor = BlueLight,
                 contentColor = BlueMain

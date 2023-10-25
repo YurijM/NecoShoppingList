@@ -10,6 +10,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.mu.necoshoppinglist.R
 import com.mu.necoshoppinglist.navigation.NavGraph
@@ -21,6 +22,7 @@ import com.mu.necoshoppinglist.utils.dialog.MainDialog
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MainScreen(
+    navControllerAdd: NavHostController,
     viewModel: ShoppingListViewModel = hiltViewModel()
 ) {
     val navController = rememberNavController()
@@ -47,7 +49,9 @@ fun MainScreen(
         },
         floatingActionButtonPosition = FabPosition.Center
     ) { paddingValues ->
-        NavGraph(navController, paddingValues)
+        NavGraph(navController, paddingValues) { route ->
+            navControllerAdd.navigate(route)
+        }
         MainDialog(dialogController = viewModel)
     }
 }

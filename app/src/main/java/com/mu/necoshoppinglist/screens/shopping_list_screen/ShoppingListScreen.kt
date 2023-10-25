@@ -6,19 +6,33 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.mu.necoshoppinglist.data.entity.ShoppingListItemEntity
 import com.mu.necoshoppinglist.ui.theme.GrayLight
+import com.mu.necoshoppinglist.utils.UiEvent
 import com.mu.necoshoppinglist.utils.dialog.MainDialog
 
 @Composable
 fun ShoppingListScreen(
     paddingValues: PaddingValues,
-    viewModel: ShoppingListViewModel = hiltViewModel()
+    viewModel: ShoppingListViewModel = hiltViewModel(),
+    onNavigate: (String) -> Unit
 ) {
     val list = viewModel.list.collectAsState(initial = emptyList<ShoppingListItemEntity>())
+
+    LaunchedEffect(key1 = true) {
+        viewModel.uiEvent.collect { uiEvent ->
+            when(uiEvent) {
+                is UiEvent.Navigate -> {
+                    onNavigate(uiEvent.route)
+                }
+                else -> {}
+            }
+        }
+    }
 
     LazyColumn(
         modifier = Modifier
