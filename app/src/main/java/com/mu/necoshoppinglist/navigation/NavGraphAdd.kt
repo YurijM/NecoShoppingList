@@ -1,9 +1,11 @@
 package com.mu.necoshoppinglist.navigation
 
 import androidx.compose.runtime.Composable
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import com.mu.necoshoppinglist.main_screen.MainScreen
 import com.mu.necoshoppinglist.screens.add_item_screen.AddItemScreen
 import com.mu.necoshoppinglist.screens.new_note.NewNoteScreen
@@ -19,7 +21,15 @@ fun NavGraphAdd() {
         composable(Routes.MAIN_SCREEN) {
             MainScreen(navController)
         }
-        composable(Routes.ADD_ITEM) {
+        composable(
+            Routes.ADD_ITEM + "/{listId}",
+            arguments = listOf(
+                navArgument("listId") {
+                    type = NavType.IntType
+                    defaultValue = -1
+                }
+            )
+            ) {
             AddItemScreen()
         }
         composable(Routes.NEW_NOTE) {

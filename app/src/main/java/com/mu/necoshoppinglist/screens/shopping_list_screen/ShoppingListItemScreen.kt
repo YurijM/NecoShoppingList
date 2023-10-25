@@ -61,7 +61,11 @@ fun ShoppingListItemScreen(
                 }
                 .padding(bottom = 4.dp)
                 .clickable {
-                           onEvent(ShoppingListEvent.OnItemClick(Routes.ADD_ITEM))
+                    onEvent(
+                        ShoppingListEvent.OnItemClick(
+                            Routes.ADD_ITEM + "/${item.id}"
+                        )
+                    )
                 },
             colors = CardDefaults.cardColors(
                 containerColor = BlueLight,
