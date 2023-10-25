@@ -16,7 +16,7 @@ class AddItemRepositoryImpl(
         dao.deleteItem(item)
     }
 
-    override fun getAllItemsById(shoppingListId: Int): Flow<AddItemEntity> {
+    override fun getAllItemsById(shoppingListId: Int): Flow<List<AddItemEntity>> {
         return dao.getAllItemsById(shoppingListId)
     }
 

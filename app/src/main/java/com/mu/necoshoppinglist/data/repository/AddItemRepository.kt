@@ -7,7 +7,7 @@ import kotlinx.coroutines.flow.Flow
 interface AddItemRepository {
     suspend fun insertItem(item: AddItemEntity)
     suspend fun deleteItem(item: AddItemEntity)
-    fun getAllItemsById(shoppingListId: Int): Flow<AddItemEntity>
+    fun getAllItemsById(shoppingListId: Int): Flow<List<AddItemEntity>>
     suspend fun getShoppingListItemById(shoppingListId: Int): ShoppingListItemEntity
     suspend fun insertItem(item: ShoppingListItemEntity)
 

@@ -19,7 +19,7 @@ interface AddItemDao {
 
     @Query("SELECT * FROM add_item_table " +
             "WHERE shoppingListId = :shoppingListId")
-    fun getAllItemsById(shoppingListId: Int): Flow<AddItemEntity>
+    fun getAllItemsById(shoppingListId: Int): Flow<List<AddItemEntity>>
 
     @Query("SELECT * FROM shopping_list_item_table " +
             "WHERE id = :shoppingListId")
