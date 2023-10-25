@@ -1,5 +1,6 @@
 package com.mu.necoshoppinglist.screens.shopping_list_screen
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -35,7 +36,10 @@ import com.mu.necoshoppinglist.ui.theme.BlueMain
 import com.mu.necoshoppinglist.ui.theme.LightText
 
 @Composable
-fun ShoppingListItemScreen(item: ShoppingListItemEntity) {
+fun ShoppingListItemScreen(
+    item: ShoppingListItemEntity,
+    onEvent: (ShoppingListEvent) -> Unit
+    ) {
     ConstraintLayout(
         modifier = Modifier
             .fillMaxWidth()
@@ -54,7 +58,8 @@ fun ShoppingListItemScreen(item: ShoppingListItemEntity) {
                     start.linkTo(parent.start)
                     end.linkTo(parent.end)
                 }
-                .padding(bottom = 4.dp),
+                .padding(bottom = 4.dp)
+                .clickable {  },
             colors = CardDefaults.cardColors(
                 containerColor = BlueLight,
                 contentColor = BlueMain
@@ -126,7 +131,9 @@ fun ShoppingListItemScreen(item: ShoppingListItemEntity) {
                     containerColor = Color.Green,
                     contentColor = Color.White
                 ),
-                onClick = {}
+                onClick = {
+                    onEvent(ShoppingListEvent.OnShowEditDialog(item))
+                }
             ) {
                 Icon(
                     modifier = Modifier.size(20.dp),
@@ -143,7 +150,9 @@ fun ShoppingListItemScreen(item: ShoppingListItemEntity) {
                     containerColor = Color.Red,
                     contentColor = Color.White
                 ),
-                onClick = {}
+                onClick = {
+                    onEvent(ShoppingListEvent.OnShowDeleteDialog(item))
+                }
             ) {
                 Icon(
                     modifier = Modifier.size(20.dp),

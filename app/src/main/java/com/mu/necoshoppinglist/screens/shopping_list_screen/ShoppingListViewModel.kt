@@ -74,7 +74,7 @@ class ShoppingListViewModel @Inject constructor(
             is ShoppingListEvent.OnShowDeleteDialog -> {
                 item = event.item
                 openDialog.value = true
-                dialogTitle.value = "Do you want delete \"$item.name\" really?"
+                dialogTitle.value = "Do you want delete \"${item?.name}\" really?"
                 showEditableText.value = false
             }
 

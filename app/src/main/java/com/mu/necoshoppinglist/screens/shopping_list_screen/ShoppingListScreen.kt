@@ -11,6 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.mu.necoshoppinglist.data.entity.ShoppingListItemEntity
 import com.mu.necoshoppinglist.ui.theme.GrayLight
+import com.mu.necoshoppinglist.utils.dialog.MainDialog
 
 @Composable
 fun ShoppingListScreen(
@@ -26,7 +27,10 @@ fun ShoppingListScreen(
         contentPadding = PaddingValues(bottom = paddingValues.calculateBottomPadding())
     ) {
         items(list.value) { item ->
-            ShoppingListItemScreen(item)
+            ShoppingListItemScreen(item) { event ->
+                viewModel.onEvent(event)
+            }
         }
     }
+    MainDialog(dialogController = viewModel)
 }
