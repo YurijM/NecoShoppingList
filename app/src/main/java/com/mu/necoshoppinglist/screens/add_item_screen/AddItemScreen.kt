@@ -53,7 +53,8 @@ fun AddItemScreen(
             Checkbox(
                 colors = CheckboxDefaults.colors(
                     checkedColor = Color.White,
-                    checkmarkColor = BlueMain
+                    checkmarkColor = BlueMain,
+                    uncheckedColor = BlueMain
                 ),
                 checked = item.isChecked,
                 onCheckedChange = { isChecked ->

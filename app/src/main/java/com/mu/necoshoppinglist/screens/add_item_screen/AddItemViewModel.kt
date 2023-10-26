@@ -1,5 +1,6 @@
 package com.mu.necoshoppinglist.screens.add_item_screen
 
+import android.util.Log
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
@@ -21,7 +22,7 @@ class AddItemViewModel @Inject constructor(
 ) : ViewModel(), DialogController {
     var list: Flow<List<AddItemEntity>>
     private var shoppingListItem: ShoppingListItemEntity? = null
-    private var itemName = mutableStateOf("")
+    var itemName = mutableStateOf("")
     private var listId: Int
 
     init {
@@ -39,13 +40,13 @@ class AddItemViewModel @Inject constructor(
         shoppingListId = listId
     )
 
-    override var dialogTitle = mutableStateOf("")
+    override var dialogTitle = mutableStateOf("Edit")
         private set
     override var editableText = mutableStateOf("")
         private set
     override var openDialog = mutableStateOf(false)
         private set
-    override var showEditableText = mutableStateOf(false)
+    override var showEditableText = mutableStateOf(true)
         private set
 
     override fun onDialogEvent(event: DialogEvent) {
@@ -54,13 +55,13 @@ class AddItemViewModel @Inject constructor(
                 editableText.value = event.text
             }
             is DialogEvent.OnOK -> {
-                onEvent(AddItemEvent.OnItemSave)
                 openDialog.value = false
+                item = item.copy(name = editableText.value)
                 editableText.value = ""
+                onEvent(AddItemEvent.OnItemSave)
             }
             is DialogEvent.OnCancel -> {
                 openDialog.value = false
-                itemName.value = editableText.value
                 editableText.value = ""
             }
         }
@@ -86,11 +87,12 @@ class AddItemViewModel @Inject constructor(
                 if (listId == -1) return
 
                 viewModelScope.launch {
+                    Log.d("Neco", item.toString())
                     repository.insertItem(item)
                 }
 
                 itemName.value = ""
-                AddItemEntity(
+                item =  AddItemEntity(
                     id = null,
                     name = "",
                     isChecked = false,
@@ -104,6 +106,7 @@ class AddItemViewModel @Inject constructor(
                 item = item.copy(name = itemName.value)
             }
             is AddItemEvent.OnShowEditDialog -> {
+                openDialog.value = true
                 item = event.item
                 editableText.value = item.name
             }
