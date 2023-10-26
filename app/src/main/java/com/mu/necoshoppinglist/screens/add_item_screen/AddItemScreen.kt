@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.CheckboxDefaults
 import androidx.compose.material3.Icon
@@ -19,6 +20,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.mu.necoshoppinglist.data.entity.AddItemEntity
+import com.mu.necoshoppinglist.ui.theme.BlueLight
 import com.mu.necoshoppinglist.ui.theme.BlueMain
 
 @Composable
@@ -32,7 +34,11 @@ fun AddItemScreen(
             .padding(top = 4.dp, start = 4.dp, end = 4.dp)
             .clickable {
                 onEvent(AddItemEvent.OnShowEditDialog(item))
-            }
+            },
+        colors = CardDefaults.cardColors(
+            containerColor = BlueLight,
+            contentColor = BlueMain
+        )
     ) {
         Row(
             modifier = Modifier.fillMaxWidth(),
