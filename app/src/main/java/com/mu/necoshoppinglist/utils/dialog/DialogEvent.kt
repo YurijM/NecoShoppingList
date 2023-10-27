@@ -4,4 +4,5 @@ sealed class DialogEvent {
     data class OnTextChange(val text: String) : DialogEvent()
     object OnCancel : DialogEvent()
     object OnOK : DialogEvent()
+    object OnDoNotClose : DialogEvent()
 }

@@ -1,6 +1,5 @@
 package com.mu.necoshoppinglist.screens.add_item_screen
 
-import android.util.Log
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
@@ -8,10 +7,13 @@ import androidx.lifecycle.viewModelScope
 import com.mu.necoshoppinglist.data.entity.AddItemEntity
 import com.mu.necoshoppinglist.data.entity.ShoppingListItemEntity
 import com.mu.necoshoppinglist.data.repository.AddItemRepository
+import com.mu.necoshoppinglist.utils.UiEvent
 import com.mu.necoshoppinglist.utils.dialog.DialogController
 import com.mu.necoshoppinglist.utils.dialog.DialogEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -20,6 +22,10 @@ class AddItemViewModel @Inject constructor(
     private val repository: AddItemRepository,
     saveStateHandle: SavedStateHandle
 ) : ViewModel(), DialogController {
+
+    private val _uiEvent = Channel<UiEvent>()
+    val uiEvent = _uiEvent.receiveAsFlow()
+
     var list: Flow<List<AddItemEntity>>
     private var shoppingListItem: ShoppingListItemEntity? = null
     var itemName = mutableStateOf("")
@@ -64,6 +70,9 @@ class AddItemViewModel @Inject constructor(
                 openDialog.value = false
                 editableText.value = ""
             }
+            is DialogEvent.OnDoNotClose -> {
+                openDialog.value = true
+            }
         }
     }
 
@@ -86,8 +95,13 @@ class AddItemViewModel @Inject constructor(
             is AddItemEvent.OnItemSave -> {
                 if (listId == -1) return
 
+                if (item.name.isEmpty()) {
+                    sendUiEvent(UiEvent.ShowSnackBar("Значение поля не может быть пустым"))
+                    onDialogEvent(DialogEvent.OnDoNotClose)
+                    return
+                }
+
                 viewModelScope.launch {
-                    Log.d("Neco", item.toString())
                     repository.insertItem(item)
                 }
 
@@ -130,6 +144,12 @@ class AddItemViewModel @Inject constructor(
                     )
                 }
             }
+        }
+    }
+
+    private fun sendUiEvent(event: UiEvent) {
+        viewModelScope.launch {
+            _uiEvent.send((event))
         }
     }
 }

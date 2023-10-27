@@ -6,7 +6,11 @@ import androidx.compose.material3.FabPosition
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.remember
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -17,6 +21,7 @@ import com.mu.necoshoppinglist.navigation.NavGraph
 import com.mu.necoshoppinglist.screens.shopping_list_screen.ShoppingListEvent
 import com.mu.necoshoppinglist.screens.shopping_list_screen.ShoppingListViewModel
 import com.mu.necoshoppinglist.ui.theme.BlueMain
+import com.mu.necoshoppinglist.utils.UiEvent
 import com.mu.necoshoppinglist.utils.dialog.MainDialog
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -27,7 +32,25 @@ fun MainScreen(
 ) {
     val navController = rememberNavController()
 
+    val snackbarHostState = remember {
+        SnackbarHostState()
+    }
+
+    LaunchedEffect(key1 = true) {
+        viewModel.uiEvent.collect { uiEvent ->
+            when (uiEvent) {
+                is UiEvent.ShowSnackBar -> {
+                    snackbarHostState.showSnackbar(uiEvent.message)
+                }
+                else -> {}
+            }
+        }
+    }
+
     Scaffold(
+        snackbarHost = {
+            SnackbarHost(snackbarHostState)
+        },
         bottomBar = {
             BottomNav(navController)
         },

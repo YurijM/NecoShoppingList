@@ -24,9 +24,9 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -38,8 +38,8 @@ import com.mu.necoshoppinglist.ui.theme.BlueLight
 import com.mu.necoshoppinglist.ui.theme.BlueMain
 import com.mu.necoshoppinglist.ui.theme.GrayLight
 import com.mu.necoshoppinglist.ui.theme.LightText
+import com.mu.necoshoppinglist.utils.UiEvent
 import com.mu.necoshoppinglist.utils.dialog.MainDialog
-import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
@@ -49,9 +49,19 @@ fun AddItemListScreen(
 ) {
     val list = viewModel.list.collectAsState(initial = emptyList())
 
-    val scope = rememberCoroutineScope()
     val snackbarHostState = remember {
         SnackbarHostState()
+    }
+
+    LaunchedEffect(key1 = true) {
+        viewModel.uiEvent.collect { uiEvent ->
+            when (uiEvent) {
+                is UiEvent.ShowSnackBar -> {
+                    snackbarHostState.showSnackbar(uiEvent.message)
+                }
+                else -> {}
+            }
+        }
     }
 
     Scaffold(
@@ -107,13 +117,7 @@ fun AddItemListScreen(
                             contentColor = BlueMain
                         ),
                         onClick = {
-                            if (viewModel.itemName.value.isEmpty()) {
-                                scope.launch {
-                                    snackbarHostState.showSnackbar("Значение поля не может быть пустым")
-                                }
-                            } else {
-                                viewModel.onEvent(AddItemEvent.OnItemSave)
-                            }
+                            viewModel.onEvent(AddItemEvent.OnItemSave)
                         }
                     ) {
                         Icon(

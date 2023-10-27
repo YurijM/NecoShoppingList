@@ -35,11 +35,14 @@ class ShoppingListViewModel @Inject constructor(
         private set
 
     override fun onDialogEvent(event: DialogEvent) {
-        when(event) {
+        when (event) {
             is DialogEvent.OnTextChange -> {
                 editableText.value = event.text
             }
+
             is DialogEvent.OnOK -> {
+                openDialog.value = false
+
                 if (showEditableText.value) {
                     onEvent(ShoppingListEvent.OnItemSave)
                 } else {
@@ -47,12 +50,17 @@ class ShoppingListViewModel @Inject constructor(
                         item?.let { repository.deleteItem(it) }
                     }
                 }
-                openDialog.value = false
+
                 editableText.value = ""
             }
+
             is DialogEvent.OnCancel -> {
                 openDialog.value = false
                 editableText.value = ""
+            }
+
+            is DialogEvent.OnDoNotClose -> {
+                openDialog.value = true
             }
         }
     }
@@ -62,13 +70,14 @@ class ShoppingListViewModel @Inject constructor(
             is ShoppingListEvent.OnShowEditDialog -> {
                 item = event.item
                 openDialog.value = true
+                editableText.value = item?.name ?: ""
+                showEditableText.value = true
+
                 dialogTitle.value = if (item == null) {
                     "New item"
                 } else {
                     "Edit item"
                 }
-                editableText.value = item?.name ?: ""
-                showEditableText.value = true
             }
 
             is ShoppingListEvent.OnShowDeleteDialog -> {
@@ -83,6 +92,12 @@ class ShoppingListViewModel @Inject constructor(
             }
 
             is ShoppingListEvent.OnItemSave -> {
+                if (editableText.value.isEmpty()) {
+                    sendUiEvent(UiEvent.ShowSnackBar("Значение поля не может быть пустым"))
+                    onDialogEvent(DialogEvent.OnDoNotClose)
+                    return
+                }
+
                 viewModelScope.launch {
                     repository.insertItem(
                         ShoppingListItemEntity(
