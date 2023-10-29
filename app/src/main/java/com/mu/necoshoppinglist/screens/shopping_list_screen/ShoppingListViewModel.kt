@@ -39,7 +39,6 @@ class ShoppingListViewModel @Inject constructor(
             is DialogEvent.OnTextChange -> {
                 editableText.value = event.text
             }
-
             is DialogEvent.OnOK -> {
                 openDialog.value = false
 
@@ -53,12 +52,10 @@ class ShoppingListViewModel @Inject constructor(
 
                 editableText.value = ""
             }
-
             is DialogEvent.OnCancel -> {
                 openDialog.value = false
                 editableText.value = ""
             }
-
             is DialogEvent.OnDoNotClose -> {
                 openDialog.value = true
             }

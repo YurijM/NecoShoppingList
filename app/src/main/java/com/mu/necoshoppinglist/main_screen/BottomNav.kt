@@ -6,18 +6,16 @@ import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
-import androidx.navigation.NavHostController
-import androidx.navigation.compose.currentBackStackEntryAsState
 import com.mu.necoshoppinglist.ui.theme.BlueLight
 import com.mu.necoshoppinglist.ui.theme.BlueMain
 import com.mu.necoshoppinglist.ui.theme.GrayLight
 
 @Composable
 fun BottomNav(
-    navController: NavHostController
+    currentRoute: String?,
+    onNavigate: (String) -> Unit
 ) {
     val listItems = listOf(
         BottomNavItem.ListItem,
@@ -29,9 +27,6 @@ fun BottomNav(
         containerColor = Color.White
     ) {
         listItems.forEach { item ->
-            val navBackStackEntry by navController.currentBackStackEntryAsState()
-            val currentRoute = navBackStackEntry?.destination?.route
-
             NavigationBarItem(
                 colors = NavigationBarItemDefaults.colors(
                     selectedIconColor = BlueMain,
@@ -42,7 +37,7 @@ fun BottomNav(
                 ),
                 selected = currentRoute == item.route,
                 onClick = {
-                    navController.navigate(item.route)
+                    onNavigate(item.route)
                 },
                 icon = {
                        Icon(
