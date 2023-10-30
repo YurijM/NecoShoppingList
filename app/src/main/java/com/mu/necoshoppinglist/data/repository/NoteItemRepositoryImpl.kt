@@ -15,7 +15,7 @@ class NoteItemRepositoryImpl(
         dao.deleteItem(item)
     }
 
-    override fun getAllItems(): Flow<NoteItemEntity> {
+    override fun getAllItems(): Flow<List<NoteItemEntity>> {
         return getAllItems()
     }
 

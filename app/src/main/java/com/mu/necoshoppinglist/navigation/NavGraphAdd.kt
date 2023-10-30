@@ -32,8 +32,10 @@ fun NavGraphAdd() {
             ) {
             AddItemListScreen()
         }
-        composable(Routes.NEW_NOTE) {
-            NewNoteScreen()
+        composable(Routes.NEW_NOTE + "/{noteId}") {
+            NewNoteScreen() {
+                navController.popBackStack()
+            }
         }
     }
 }

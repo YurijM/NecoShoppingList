@@ -6,6 +6,6 @@ import kotlinx.coroutines.flow.Flow
 interface NoteItemRepository {
     suspend fun insertItem(item: NoteItemEntity)
     suspend fun deleteItem(item: NoteItemEntity)
-    fun getAllItems(): Flow<NoteItemEntity>
+    fun getAllItems(): Flow<List<NoteItemEntity>>
     fun getNoteItemById(id: Int): NoteItemEntity
 }

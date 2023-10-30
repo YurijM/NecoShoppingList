@@ -18,20 +18,35 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.mu.necoshoppinglist.ui.theme.BlueLight
 import com.mu.necoshoppinglist.ui.theme.BlueMain
 import com.mu.necoshoppinglist.ui.theme.LightText
+import com.mu.necoshoppinglist.utils.UiEvent
 
 @OptIn(ExperimentalMaterial3Api::class)
-@Preview(showBackground = true)
 @Composable
-fun NewNoteScreen() {
+fun NewNoteScreen(
+    viewModel: NewNoteViewModel = hiltViewModel(),
+    onPopBackStack: () -> Unit
+) {
+    LaunchedEffect(key1 = true) {
+        viewModel.uiEvent.collect { uiEvent ->
+            when(uiEvent) {
+                is UiEvent.PopBackStack -> {
+                    onPopBackStack()
+                }
+                else -> {}
+            }
+        }
+    }
+
     Card(
         modifier = Modifier
             .fillMaxSize()
@@ -52,9 +67,9 @@ fun NewNoteScreen() {
             ) {
                 TextField(
                     modifier = Modifier.weight(1f),
-                    value = "",
+                    value = viewModel.title,
                     onValueChange = { text ->
-                        //viewModel.onEvent(AddItemEvent.OnTextChange(text))
+                        viewModel.onEvent(NewNoteEvent.OnTitleChange(text))
                     },
                     label = {
                         Text(
@@ -78,7 +93,7 @@ fun NewNoteScreen() {
                         contentColor = BlueMain
                     ),
                     onClick = {
-
+                        viewModel.onEvent(NewNoteEvent.OnSave)
                     }
                 ) {
                     Icon(
@@ -91,9 +106,9 @@ fun NewNoteScreen() {
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(start = 8.dp, end = 8.dp, bottom = 8.dp),
-                value = "",
+                value = viewModel.description,
                 onValueChange = { text ->
-                    //viewModel.onEvent(AddItemEvent.OnTextChange(text))
+                    viewModel.onEvent(NewNoteEvent.OnDescriptionChange(text))
                 },
                 label = {
                     Text(

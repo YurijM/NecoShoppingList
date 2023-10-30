@@ -21,6 +21,7 @@ import androidx.navigation.compose.rememberNavController
 import com.mu.necoshoppinglist.R
 import com.mu.necoshoppinglist.navigation.NavGraph
 import com.mu.necoshoppinglist.ui.theme.BlueMain
+import com.mu.necoshoppinglist.utils.Routes
 import com.mu.necoshoppinglist.utils.UiEvent
 import com.mu.necoshoppinglist.utils.dialog.MainDialog
 
@@ -71,7 +72,8 @@ fun MainScreen(
                     contentColor = Color.White,
                     shape = RoundedCornerShape(50),
                     onClick = {
-                        //viewModel.onEvent(MainEvent.OnShowEditDialog)
+                        viewModel.onEvent(
+                            MainEvent.OnNewItemClick(currentRoute ?: Routes.SHOPPING_LIST))
                     }
                 ) {
                     Icon(
