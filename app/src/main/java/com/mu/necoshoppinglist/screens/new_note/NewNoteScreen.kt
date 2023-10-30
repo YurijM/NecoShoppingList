@@ -121,16 +121,16 @@ fun NewNoteScreen(
                     label = {
                         Text(
                             text = "Текст статьи",
-                            //fontSize = 16.sp
+                            fontSize = 14.sp
                         )
                     },
                     colors = TextFieldDefaults.textFieldColors(
                         containerColor = Color.Transparent,
                         textColor = BlueMain,
-                        focusedIndicatorColor = Color.Transparent,
+                        focusedIndicatorColor = BlueMain,
                         cursorColor = BlueMain,
                         focusedLabelColor = Color.White,
-                        unfocusedIndicatorColor = Color.Transparent,
+                        unfocusedIndicatorColor = BlueMain,
                         unfocusedLabelColor = LightText
                     )
                 )
