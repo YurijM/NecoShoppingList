@@ -1,5 +1,7 @@
 package com.mu.necoshoppinglist.screens.new_note
 
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -27,6 +29,7 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.mu.necoshoppinglist.ui.theme.BlueLight
 import com.mu.necoshoppinglist.ui.theme.BlueMain
+import com.mu.necoshoppinglist.ui.theme.GrayLight
 import com.mu.necoshoppinglist.ui.theme.LightText
 import com.mu.necoshoppinglist.utils.UiEvent
 
@@ -47,7 +50,12 @@ fun NewNoteScreen(
         }
     }
 
-    Card(
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(GrayLight)
+    ) {
+        Card(
         modifier = Modifier
             .fillMaxSize()
             .padding(12.dp),
@@ -56,76 +64,77 @@ fun NewNoteScreen(
         ),
         shape = RoundedCornerShape(8.dp)
     ) {
-        Column(
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(start = 8.dp),
-                verticalAlignment = Alignment.CenterVertically
+            Column(
+                modifier = Modifier.fillMaxWidth()
             ) {
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(start = 8.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    TextField(
+                        modifier = Modifier.weight(1f),
+                        value = viewModel.title,
+                        onValueChange = { text ->
+                            viewModel.onEvent(NewNoteEvent.OnTitleChange(text))
+                        },
+                        label = {
+                            Text(
+                                text = "Название статьи",
+                                fontSize = 16.sp
+                            )
+                        },
+                        singleLine = true,
+                        colors = TextFieldDefaults.textFieldColors(
+                            containerColor = Color.Transparent,
+                            textColor = BlueMain,
+                            focusedIndicatorColor = BlueMain,
+                            cursorColor = BlueMain,
+                            focusedLabelColor = Color.White,
+                            unfocusedIndicatorColor = BlueMain,
+                            unfocusedLabelColor = LightText
+                        )
+                    )
+                    IconButton(
+                        colors = IconButtonDefaults.iconButtonColors(
+                            contentColor = BlueMain
+                        ),
+                        onClick = {
+                            viewModel.onEvent(NewNoteEvent.OnSave)
+                        }
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.Send,
+                            contentDescription = "Delete"
+                        )
+                    }
+                }
                 TextField(
-                    modifier = Modifier.weight(1f),
-                    value = viewModel.title,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(start = 8.dp, end = 8.dp, bottom = 8.dp),
+                    value = viewModel.description,
                     onValueChange = { text ->
-                        viewModel.onEvent(NewNoteEvent.OnTitleChange(text))
+                        viewModel.onEvent(NewNoteEvent.OnDescriptionChange(text))
                     },
                     label = {
                         Text(
-                            text = "Название статьи",
-                            fontSize = 16.sp
+                            text = "Текст статьи",
+                            //fontSize = 16.sp
                         )
                     },
-                    singleLine = true,
                     colors = TextFieldDefaults.textFieldColors(
                         containerColor = Color.Transparent,
                         textColor = BlueMain,
-                        focusedIndicatorColor = BlueMain,
+                        focusedIndicatorColor = Color.Transparent,
                         cursorColor = BlueMain,
                         focusedLabelColor = Color.White,
-                        unfocusedIndicatorColor = BlueMain,
+                        unfocusedIndicatorColor = Color.Transparent,
                         unfocusedLabelColor = LightText
                     )
                 )
-                IconButton(
-                    colors = IconButtonDefaults.iconButtonColors(
-                        contentColor = BlueMain
-                    ),
-                    onClick = {
-                        viewModel.onEvent(NewNoteEvent.OnSave)
-                    }
-                ) {
-                    Icon(
-                        imageVector = Icons.Default.Send,
-                        contentDescription = "Delete"
-                    )
-                }
             }
-            TextField(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(start = 8.dp, end = 8.dp, bottom = 8.dp),
-                value = viewModel.description,
-                onValueChange = { text ->
-                    viewModel.onEvent(NewNoteEvent.OnDescriptionChange(text))
-                },
-                label = {
-                    Text(
-                        text = "Текст статьи",
-                        //fontSize = 16.sp
-                    )
-                },
-                colors = TextFieldDefaults.textFieldColors(
-                    containerColor = Color.Transparent,
-                    textColor = BlueMain,
-                    focusedIndicatorColor = Color.Transparent,
-                    cursorColor = BlueMain,
-                    focusedLabelColor = Color.White,
-                    unfocusedIndicatorColor = Color.Transparent,
-                    unfocusedLabelColor = LightText
-                )
-            )
         }
     }
 }
