@@ -17,9 +17,9 @@ interface NoteItemDao {
     suspend fun deleteItem(item: NoteItemEntity)
 
     @Query("SELECT * FROM note_item_table")
-    fun getAllItems(): Flow<NoteItemEntity>
+    fun getAllItems(): Flow<List<NoteItemEntity>>
 
     @Query("SELECT * FROM note_item_table " +
             "WHERE id = :id")
-    fun getNoteItemById(id: Int): NoteItemEntity
+    suspend fun getNoteItemById(id: Int): NoteItemEntity
 }

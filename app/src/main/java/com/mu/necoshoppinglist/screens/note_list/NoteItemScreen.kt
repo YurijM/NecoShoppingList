@@ -1,5 +1,6 @@
 package com.mu.necoshoppinglist.screens.note_list
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -26,13 +27,24 @@ import com.mu.necoshoppinglist.data.entity.NoteItemEntity
 import com.mu.necoshoppinglist.ui.theme.BlueLight
 import com.mu.necoshoppinglist.ui.theme.BlueMain
 import com.mu.necoshoppinglist.ui.theme.LightText
+import com.mu.necoshoppinglist.utils.Routes
 
 @Composable
-fun NoteItemScreen(note: NoteItemEntity) {
+fun NoteItemScreen(
+    note: NoteItemEntity,
+    onEvent: (NoteEvent) -> Unit
+) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(4.dp),
+            .padding(4.dp)
+            .clickable {
+                onEvent(
+                    NoteEvent.OnItemClick(
+                    Routes.NEW_NOTE + "/${note.id}"
+                    )
+                )
+            },
         colors = CardDefaults.cardColors(
             containerColor = BlueLight,
             contentColor = BlueMain
@@ -79,6 +91,7 @@ fun NoteItemScreen(note: NoteItemEntity) {
                     contentColor = Color.Red
                 ),
                 onClick = {
+                    onEvent(NoteEvent.OnShowDeleteDialog(note))
                 }
             ) {
                 Icon(

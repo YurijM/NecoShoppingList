@@ -7,5 +7,5 @@ interface NoteItemRepository {
     suspend fun insertItem(item: NoteItemEntity)
     suspend fun deleteItem(item: NoteItemEntity)
     fun getAllItems(): Flow<List<NoteItemEntity>>
-    fun getNoteItemById(id: Int): NoteItemEntity
+    suspend fun getNoteItemById(id: Int): NoteItemEntity
 }

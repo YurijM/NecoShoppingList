@@ -8,11 +8,13 @@ import com.mu.necoshoppinglist.data.repository.NoteItemRepository
 import com.mu.necoshoppinglist.utils.UiEvent
 import com.mu.necoshoppinglist.utils.dialog.DialogController
 import com.mu.necoshoppinglist.utils.dialog.DialogEvent
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+@HiltViewModel
 class NoteViewModel @Inject constructor(
     private val repository: NoteItemRepository
 ) : ViewModel(), DialogController {
@@ -28,7 +30,7 @@ class NoteViewModel @Inject constructor(
         }
     }
 
-    override var dialogTitle = mutableStateOf("Вы действительно хотите удалить статью \"\"")
+    override var dialogTitle = mutableStateOf("")
         private set
     override var editableText = mutableStateOf("")
         private set
@@ -60,6 +62,7 @@ class NoteViewModel @Inject constructor(
             is NoteEvent.OnShowDeleteDialog -> {
                 openDialog.value = true
                 note = event.item
+                dialogTitle.value = "Вы действительно хотите удалить статью \"${note?.title}\""
             }
         }
     }

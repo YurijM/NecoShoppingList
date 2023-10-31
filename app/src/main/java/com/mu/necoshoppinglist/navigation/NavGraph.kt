@@ -27,7 +27,9 @@ fun NavGraph(
             }
         }
         composable(Routes.NOTE_LIST) {
-            NoteListScreen(paddingValues)
+            NoteListScreen(paddingValues) { route ->
+                onNavigate(route)
+            }
         }
         composable(Routes.ABOUT) {
             AboutScreen(paddingValues)

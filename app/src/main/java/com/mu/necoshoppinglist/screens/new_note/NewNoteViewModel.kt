@@ -39,10 +39,12 @@ class NewNoteViewModel @Inject constructor(
 
     init {
         noteId = savedStateHandle.get<String>("noteId")?.toInt() ?: -1
-
         if (noteId != -1) {
             viewModelScope.launch {
                 note = repository.getNoteItemById(noteId)
+
+                title = note.title
+                description = note.description
             }
         } else {
             note = NoteItemEntity(
@@ -67,6 +69,8 @@ class NewNoteViewModel @Inject constructor(
             is NewNoteEvent.OnSave -> {
                 viewModelScope.launch {
                     repository.insertItem(note.copy(time = "01.10.2023 14:52"))
+
+                    sendUiEvent(UiEvent.PopBackStack)
                 }
             }
         }

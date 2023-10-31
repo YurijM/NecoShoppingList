@@ -16,10 +16,10 @@ class NoteItemRepositoryImpl(
     }
 
     override fun getAllItems(): Flow<List<NoteItemEntity>> {
-        return getAllItems()
+        return dao.getAllItems()
     }
 
-    override fun getNoteItemById(id: Int): NoteItemEntity {
-        return getNoteItemById(id)
+    override suspend fun getNoteItemById(id: Int): NoteItemEntity {
+        return dao.getNoteItemById(id)
     }
 }
