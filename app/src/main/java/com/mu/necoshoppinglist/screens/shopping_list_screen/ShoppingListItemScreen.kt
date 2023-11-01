@@ -34,6 +34,7 @@ import com.mu.necoshoppinglist.data.entity.ShoppingListItemEntity
 import com.mu.necoshoppinglist.ui.theme.BlueLight
 import com.mu.necoshoppinglist.ui.theme.BlueMain
 import com.mu.necoshoppinglist.ui.theme.LightText
+import com.mu.necoshoppinglist.utils.ProgressHelper
 import com.mu.necoshoppinglist.utils.Routes
 
 @Composable
@@ -98,11 +99,10 @@ fun ShoppingListItemScreen(
                         .padding(top = 4.dp),
                     color = BlueMain,
                     trackColor = Color.LightGray,
-                    progress = if (item.allItemsCount == 0) {
-                        0f
-                    } else {
-                        item.allSelectedItemsCount.toFloat() / item.allItemsCount.toFloat()
-                    }
+                    progress = ProgressHelper.getProgress(
+                        allItemsCount = item.allItemsCount,
+                        selectedItemsCount = item.allSelectedItemsCount
+                    )
                 )
             }
         }

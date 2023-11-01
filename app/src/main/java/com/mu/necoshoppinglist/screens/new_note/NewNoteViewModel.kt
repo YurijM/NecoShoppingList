@@ -9,6 +9,7 @@ import androidx.lifecycle.viewModelScope
 import com.mu.necoshoppinglist.data.entity.NoteItemEntity
 import com.mu.necoshoppinglist.data.repository.NoteItemRepository
 import com.mu.necoshoppinglist.utils.UiEvent
+import com.mu.necoshoppinglist.utils.getCurrentTime
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow
@@ -73,7 +74,7 @@ class NewNoteViewModel @Inject constructor(
                 }
 
                 viewModelScope.launch {
-                    repository.insertItem(note.copy(time = "01.10.2023 14:52"))
+                    repository.insertItem(note.copy(time = if (note.id != null) note.time else getCurrentTime()))
 
                     sendUiEvent(UiEvent.PopBackStack)
                 }

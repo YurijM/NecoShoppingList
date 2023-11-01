@@ -8,6 +8,7 @@ import com.mu.necoshoppinglist.data.repository.ShoppingListItemRepository
 import com.mu.necoshoppinglist.utils.UiEvent
 import com.mu.necoshoppinglist.utils.dialog.DialogController
 import com.mu.necoshoppinglist.utils.dialog.DialogEvent
+import com.mu.necoshoppinglist.utils.getCurrentTime
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow
@@ -80,7 +81,7 @@ class ShoppingListViewModel @Inject constructor(
             is ShoppingListEvent.OnShowDeleteDialog -> {
                 item = event.item
                 openDialog.value = true
-                dialogTitle.value = "Do you want delete \"${item?.name}\" really?"
+                dialogTitle.value = "Вы действительно хотите удалить покупки \"${item?.name}\"?"
                 showEditableText.value = false
             }
 
@@ -100,7 +101,7 @@ class ShoppingListViewModel @Inject constructor(
                         ShoppingListItemEntity(
                             item?.id,
                             editableText.value,
-                            item?.time ?: "",
+                            item?.time ?: getCurrentTime(),
                             item?.allItemsCount ?: 0,
                             item?.allSelectedItemsCount ?: 0
                         )

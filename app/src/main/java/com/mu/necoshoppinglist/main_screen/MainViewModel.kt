@@ -9,6 +9,7 @@ import com.mu.necoshoppinglist.utils.Routes
 import com.mu.necoshoppinglist.utils.UiEvent
 import com.mu.necoshoppinglist.utils.dialog.DialogController
 import com.mu.necoshoppinglist.utils.dialog.DialogEvent
+import com.mu.necoshoppinglist.utils.getCurrentTime
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow
@@ -44,8 +45,7 @@ class MainViewModel @Inject constructor(
                         ShoppingListItemEntity(
                             null,
                             editableText.value,
-                            "01.10.2023 12:00",
-                            //getCurrentTime(),
+                            getCurrentTime(),
                             0,
                             0
                         )
