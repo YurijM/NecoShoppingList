@@ -44,6 +44,8 @@ class NoteViewModel @Inject constructor(
             is DialogEvent.OnOK -> {
                 viewModelScope.launch {
                     note?.let { repository.deleteItem(it) }
+
+                    sendUiEvent(UiEvent.ShowSnackBar("Отменить удаление?"))
                 }
                 openDialog.value = false
             }
@@ -63,6 +65,11 @@ class NoteViewModel @Inject constructor(
                 openDialog.value = true
                 note = event.item
                 dialogTitle.value = "Вы действительно хотите удалить статью \"${note?.title}\""
+            }
+            is NoteEvent.UnDoneDeleteItem -> {
+                viewModelScope.launch {
+                    note?.let { repository.insertItem(it) }
+                }
             }
         }
     }

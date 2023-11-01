@@ -16,11 +16,16 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.IconButtonDefaults
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Snackbar
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -39,53 +44,114 @@ fun NewNoteScreen(
     viewModel: NewNoteViewModel = hiltViewModel(),
     onPopBackStack: () -> Unit
 ) {
+
+    val snackbarHostState = remember {
+        SnackbarHostState()
+    }
+
     LaunchedEffect(key1 = true) {
         viewModel.uiEvent.collect { uiEvent ->
-            when(uiEvent) {
+            when (uiEvent) {
                 is UiEvent.PopBackStack -> {
                     onPopBackStack()
+                }
+                is UiEvent.ShowSnackBar -> {
+                    snackbarHostState.showSnackbar(uiEvent.message)
                 }
                 else -> {}
             }
         }
     }
 
-    Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(GrayLight)
-    ) {
-        Card(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(12.dp),
-        colors = CardDefaults.cardColors(
-            containerColor = BlueLight
-        ),
-        shape = RoundedCornerShape(8.dp)
-    ) {
-            Column(
-                modifier = Modifier.fillMaxWidth()
+    Scaffold(
+        snackbarHost = {
+            SnackbarHost(hostState = snackbarHostState) { data ->
+                Snackbar(
+                    //modifier = Modifier.padding(bottom = 32.dp),
+                    snackbarData = data,
+                    containerColor = Color.Red,
+                    contentColor = Color.White,
+                    actionColor = Color.Yellow,
+                    //shape = RoundedCornerShape(8.dp)
+                )
+            }
+        }
+    ) { paddingValues ->
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(GrayLight)
+                .padding(bottom = paddingValues.calculateBottomPadding())
+        ) {
+            Card(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(12.dp),
+                colors = CardDefaults.cardColors(
+                    containerColor = BlueLight
+                ),
+                shape = RoundedCornerShape(8.dp)
             ) {
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(start = 8.dp),
-                    verticalAlignment = Alignment.CenterVertically
+                Column(
+                    modifier = Modifier.fillMaxWidth()
                 ) {
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(start = 8.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        TextField(
+                            modifier = Modifier.weight(1f),
+                            value = viewModel.title,
+                            onValueChange = { text ->
+                                viewModel.onEvent(NewNoteEvent.OnTitleChange(text))
+                            },
+                            label = {
+                                Text(
+                                    text = "Название статьи",
+                                    fontSize = 16.sp
+                                )
+                            },
+                            singleLine = true,
+                            colors = TextFieldDefaults.textFieldColors(
+                                containerColor = Color.Transparent,
+                                textColor = BlueMain,
+                                focusedIndicatorColor = BlueMain,
+                                cursorColor = BlueMain,
+                                focusedLabelColor = Color.White,
+                                unfocusedIndicatorColor = BlueMain,
+                                unfocusedLabelColor = LightText
+                            )
+                        )
+                        IconButton(
+                            colors = IconButtonDefaults.iconButtonColors(
+                                contentColor = BlueMain
+                            ),
+                            onClick = {
+                                viewModel.onEvent(NewNoteEvent.OnSave)
+                            }
+                        ) {
+                            Icon(
+                                imageVector = Icons.Default.Send,
+                                contentDescription = "Delete"
+                            )
+                        }
+                    }
                     TextField(
-                        modifier = Modifier.weight(1f),
-                        value = viewModel.title,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(start = 8.dp, end = 8.dp, bottom = 8.dp),
+                        value = viewModel.description,
                         onValueChange = { text ->
-                            viewModel.onEvent(NewNoteEvent.OnTitleChange(text))
+                            viewModel.onEvent(NewNoteEvent.OnDescriptionChange(text))
                         },
                         label = {
                             Text(
-                                text = "Название статьи",
-                                fontSize = 16.sp
+                                text = "Текст статьи",
+                                fontSize = 14.sp
                             )
                         },
-                        singleLine = true,
                         colors = TextFieldDefaults.textFieldColors(
                             containerColor = Color.Transparent,
                             textColor = BlueMain,
@@ -96,44 +162,7 @@ fun NewNoteScreen(
                             unfocusedLabelColor = LightText
                         )
                     )
-                    IconButton(
-                        colors = IconButtonDefaults.iconButtonColors(
-                            contentColor = BlueMain
-                        ),
-                        onClick = {
-                            viewModel.onEvent(NewNoteEvent.OnSave)
-                        }
-                    ) {
-                        Icon(
-                            imageVector = Icons.Default.Send,
-                            contentDescription = "Delete"
-                        )
-                    }
                 }
-                TextField(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(start = 8.dp, end = 8.dp, bottom = 8.dp),
-                    value = viewModel.description,
-                    onValueChange = { text ->
-                        viewModel.onEvent(NewNoteEvent.OnDescriptionChange(text))
-                    },
-                    label = {
-                        Text(
-                            text = "Текст статьи",
-                            fontSize = 14.sp
-                        )
-                    },
-                    colors = TextFieldDefaults.textFieldColors(
-                        containerColor = Color.Transparent,
-                        textColor = BlueMain,
-                        focusedIndicatorColor = BlueMain,
-                        cursorColor = BlueMain,
-                        focusedLabelColor = Color.White,
-                        unfocusedIndicatorColor = BlueMain,
-                        unfocusedLabelColor = LightText
-                    )
-                )
             }
         }
     }

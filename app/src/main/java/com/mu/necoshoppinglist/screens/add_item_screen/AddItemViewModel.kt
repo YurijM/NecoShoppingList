@@ -97,7 +97,7 @@ class AddItemViewModel @Inject constructor(
 
                 if (item.name.isEmpty()) {
                     sendUiEvent(UiEvent.ShowSnackBar("Значение поля не может быть пустым"))
-                    onDialogEvent(DialogEvent.OnDoNotClose)
+                    //onDialogEvent(DialogEvent.OnDoNotClose)
                     return
                 }
 

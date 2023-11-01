@@ -67,6 +67,11 @@ class NewNoteViewModel @Inject constructor(
                 note = note.copy(description = description)
             }
             is NewNoteEvent.OnSave -> {
+                if (title.isEmpty()) {
+                    sendUiEvent(UiEvent.ShowSnackBar("Значение поля не может быть пустым"))
+                    return
+                }
+
                 viewModelScope.launch {
                     repository.insertItem(note.copy(time = "01.10.2023 14:52"))
 
