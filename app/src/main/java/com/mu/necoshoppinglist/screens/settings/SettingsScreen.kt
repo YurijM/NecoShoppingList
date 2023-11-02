@@ -21,6 +21,7 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.mu.necoshoppinglist.ui.theme.BlueLight
 import com.mu.necoshoppinglist.ui.theme.BlueMain
+import com.mu.necoshoppinglist.utils.stringToColor
 
 @Composable
 fun SettingsScreen(
@@ -48,10 +49,10 @@ fun SettingsScreen(
                     .fillMaxWidth()
                     .padding(4.dp),
                 textAlign = TextAlign.Center,
-                text = "Текущий цвет заголовка списка покупок",
+                text = "Текущий цвет заголовка заметки",
                 fontSize = 20.sp,
                 fontWeight = FontWeight.Bold,
-                color = BlueMain
+                color = stringToColor(viewModel.currentColor.value)
             )
             Text(
                 modifier = Modifier

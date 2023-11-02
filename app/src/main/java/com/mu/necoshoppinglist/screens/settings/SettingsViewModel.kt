@@ -16,12 +16,16 @@ class SettingsViewModel @Inject constructor(
 ) : ViewModel() {
     val colors = mutableStateOf<List<ColorItem>>(emptyList())
 
+    val currentColor = mutableStateOf("#03A9F4")
+
     init {
         viewModelScope.launch {
             dataStoreManager.getStringPreference(
                 DataStorageManager.TITLE_COLOR,
                 "#03A9F4"
             ).collect { selectedColor ->
+                currentColor.value = selectedColor
+
                 val colorsTemp = ArrayList<ColorItem>()
 
                 ColorObject.listColors.forEach { color ->
@@ -46,6 +50,7 @@ class SettingsViewModel @Inject constructor(
                         key = DataStorageManager.TITLE_COLOR,
                         value = event.color
                     )
+                    currentColor.value = event.color
                 }
             }
         }

@@ -14,6 +14,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.mu.necoshoppinglist.utils.ColorItem
+import com.mu.necoshoppinglist.utils.stringToColor
 
 @Composable
 fun SettingsItemScreen(
@@ -26,9 +27,7 @@ fun SettingsItemScreen(
             .clip(CircleShape)
             .size(36.dp),
         colors = IconButtonDefaults.iconButtonColors(
-            containerColor = Color(
-                android.graphics.Color.parseColor(item.color)
-            )
+            containerColor = stringToColor(item.color)
         ),
         onClick = {
             onEvent(SettingsEvent.OnItemSelected(item.color))

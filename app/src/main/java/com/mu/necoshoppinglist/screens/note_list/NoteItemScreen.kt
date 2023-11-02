@@ -28,9 +28,11 @@ import com.mu.necoshoppinglist.ui.theme.BlueLight
 import com.mu.necoshoppinglist.ui.theme.BlueMain
 import com.mu.necoshoppinglist.ui.theme.LightText
 import com.mu.necoshoppinglist.utils.Routes
+import com.mu.necoshoppinglist.utils.stringToColor
 
 @Composable
 fun NoteItemScreen(
+    titleColor: String,
     note: NoteItemEntity,
     onEvent: (NoteEvent) -> Unit
 ) {
@@ -62,8 +64,8 @@ fun NoteItemScreen(
             ) {
                 Text(
                     text = note.title,
-                    fontSize = 16.sp,
-                    fontWeight = FontWeight.Bold
+                    fontWeight = FontWeight.Bold,
+                    color = stringToColor(titleColor)
                 )
                 Text(
                     text = note.time,

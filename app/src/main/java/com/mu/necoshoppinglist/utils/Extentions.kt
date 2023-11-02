@@ -1,13 +1,16 @@
 package com.mu.necoshoppinglist.utils
 
-import androidx.lifecycle.ViewModel
+import androidx.compose.ui.graphics.Color
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
 
-fun ViewModel.getCurrentTime(): String {
+fun getCurrentTime(): String {
     val formatter = SimpleDateFormat("dd.MM.yyyy HH:mm", Locale.getDefault())
     val calendar = Calendar.getInstance()
 
     return formatter.format(calendar.time)
 }
+
+fun stringToColor(color: String) =
+    Color(android.graphics.Color.parseColor(color))

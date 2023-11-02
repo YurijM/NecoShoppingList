@@ -89,7 +89,7 @@ fun NoteListScreen(
             //contentPadding = PaddingValues(bottom = paddingValues.calculateBottomPadding())
         ) {
             items(notes.value) { item ->
-                NoteItemScreen(item) { event ->
+                NoteItemScreen(viewModel.titleColor.value, item) { event ->
                     viewModel.onEvent(event)
                 }
             }

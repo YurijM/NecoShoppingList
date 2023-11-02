@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mu.necoshoppinglist.data.entity.NoteItemEntity
 import com.mu.necoshoppinglist.data.repository.NoteItemRepository
+import com.mu.necoshoppinglist.data_storage.DataStorageManager
 import com.mu.necoshoppinglist.utils.UiEvent
 import com.mu.necoshoppinglist.utils.dialog.DialogController
 import com.mu.necoshoppinglist.utils.dialog.DialogEvent
@@ -16,13 +17,16 @@ import javax.inject.Inject
 
 @HiltViewModel
 class NoteViewModel @Inject constructor(
-    private val repository: NoteItemRepository
+    private val repository: NoteItemRepository,
+    dataStoreManager: DataStorageManager
 ) : ViewModel(), DialogController {
     val notes = repository.getAllItems()
     private var note: NoteItemEntity? = null
 
     private val _uiEvent = Channel<UiEvent>()
     val uiEvent = _uiEvent.receiveAsFlow()
+
+    val titleColor = mutableStateOf("#03A9F4")
 
     private fun sendUiEvent(event: UiEvent) {
         viewModelScope.launch {
@@ -38,6 +42,17 @@ class NoteViewModel @Inject constructor(
         private set
     override var showEditableText = mutableStateOf(false)
         private set
+
+    init {
+        viewModelScope.launch {
+            dataStoreManager.getStringPreference(
+                DataStorageManager.TITLE_COLOR,
+                "#03A9F4"
+            ).collect { color ->
+                titleColor.value = color
+            }
+        }
+    }
 
     override fun onDialogEvent(event: DialogEvent) {
         when (event) {
