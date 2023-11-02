@@ -9,6 +9,7 @@ import com.mu.necoshoppinglist.data.repository.NoteItemRepository
 import com.mu.necoshoppinglist.data.repository.NoteItemRepositoryImpl
 import com.mu.necoshoppinglist.data.repository.ShoppingListItemRepository
 import com.mu.necoshoppinglist.data.repository.ShoppingListItemRepositoryImpl
+import com.mu.necoshoppinglist.data_storage.DataStorageManager
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -44,5 +45,11 @@ object AppModule {
     @Singleton
     fun provideNoteItemRepository(db: MainDb): NoteItemRepository {
         return NoteItemRepositoryImpl(db.noteItemDao)
+    }
+
+    @Provides
+    @Singleton
+    fun provideDataStoreManager(app: Application): DataStorageManager {
+        return DataStorageManager(app)
     }
 }

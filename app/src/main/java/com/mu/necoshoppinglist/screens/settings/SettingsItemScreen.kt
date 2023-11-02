@@ -16,7 +16,10 @@ import androidx.compose.ui.unit.dp
 import com.mu.necoshoppinglist.utils.ColorItem
 
 @Composable
-fun SettingsItemScreen(item: ColorItem) {
+fun SettingsItemScreen(
+    item: ColorItem,
+    onEvent: (SettingsEvent) -> Unit
+) {
     IconButton(
         modifier = Modifier
             .padding(horizontal = 8.dp)
@@ -24,9 +27,12 @@ fun SettingsItemScreen(item: ColorItem) {
             .size(36.dp),
         colors = IconButtonDefaults.iconButtonColors(
             containerColor = Color(
-                android.graphics.Color.parseColor(item.color))
+                android.graphics.Color.parseColor(item.color)
+            )
         ),
-        onClick = {}
+        onClick = {
+            onEvent(SettingsEvent.OnItemSelected(item.color))
+        }
     ) {
         if (item.isSelected) {
             Icon(

@@ -57,7 +57,7 @@ fun SettingsScreen(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(4.dp),
-                text = "Выберите цвет для заголовка",
+                text = "Выберите цвет для заголовка:",
                 color = BlueMain
             )
             Spacer(modifier = Modifier.height(8.dp))
@@ -65,7 +65,9 @@ fun SettingsScreen(
                 modifier = Modifier.fillMaxWidth()
             ) {
                 items(colors) { color ->
-                    SettingsItemScreen(color)
+                    SettingsItemScreen(color) { event ->
+                        viewModel.onEvent(event)
+                    }
                 }
 
             }
