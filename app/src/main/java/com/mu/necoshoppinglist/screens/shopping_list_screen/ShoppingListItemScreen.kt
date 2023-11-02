@@ -33,9 +33,11 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import com.mu.necoshoppinglist.data.entity.ShoppingListItemEntity
 import com.mu.necoshoppinglist.ui.theme.BlueLight
 import com.mu.necoshoppinglist.ui.theme.BlueMain
+import com.mu.necoshoppinglist.ui.theme.GrayLight
 import com.mu.necoshoppinglist.ui.theme.LightText
-import com.mu.necoshoppinglist.utils.ProgressHelper
 import com.mu.necoshoppinglist.utils.Routes
+import com.mu.necoshoppinglist.utils.getProgress
+import com.mu.necoshoppinglist.utils.getProgressColor
 
 @Composable
 fun ShoppingListItemScreen(
@@ -51,7 +53,12 @@ fun ShoppingListItemScreen(
                 end = 4.dp
             )
     ) {
+        val progress = getProgress(
+            allItemsCount = item.allItemsCount,
+            selectedItemsCount = item.allSelectedItemsCount
+        )
         val (card, rowButton) = createRefs()
+
         Card(
             modifier = Modifier
                 .fillMaxWidth()
@@ -97,12 +104,9 @@ fun ShoppingListItemScreen(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(top = 4.dp),
-                    color = BlueMain,
-                    trackColor = Color.LightGray,
-                    progress = ProgressHelper.getProgress(
-                        allItemsCount = item.allItemsCount,
-                        selectedItemsCount = item.allSelectedItemsCount
-                    )
+                    color = getProgressColor(progress),
+                    trackColor = GrayLight,
+                    progress = progress
                 )
             }
         }
