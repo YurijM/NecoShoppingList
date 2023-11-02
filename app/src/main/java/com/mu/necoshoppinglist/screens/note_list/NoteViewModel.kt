@@ -20,7 +20,14 @@ class NoteViewModel @Inject constructor(
     private val repository: NoteItemRepository,
     dataStoreManager: DataStorageManager
 ) : ViewModel(), DialogController {
-    val notes = repository.getAllItems()
+
+    private val notesFlow = repository.getAllItems()
+
+    val notes = mutableStateOf(emptyList<NoteItemEntity>())
+    private var originalNotes = emptyList<NoteItemEntity>()
+
+    val searchText = mutableStateOf("")
+
     private var note: NoteItemEntity? = null
 
     private val _uiEvent = Channel<UiEvent>()
@@ -50,6 +57,13 @@ class NoteViewModel @Inject constructor(
                 "#03A9F4"
             ).collect { color ->
                 titleColor.value = color
+            }
+        }
+
+        viewModelScope.launch {
+            notesFlow.collect { list ->
+                notes.value = list
+                originalNotes = list
             }
         }
     }
@@ -85,6 +99,17 @@ class NoteViewModel @Inject constructor(
                 viewModelScope.launch {
                     note?.let { repository.insertItem(it) }
                 }
+            }
+            is NoteEvent.OnSearchTextChange -> {
+                searchText.value = event.text
+                notes.value = originalNotes.filter { note ->
+                    note.title.contains(event.text, true)
+                            || note.description.contains(event.text, true)
+                }
+            }
+            is NoteEvent.OnSearchTextClear -> {
+                searchText.value = ""
+                notes.value = originalNotes
             }
         }
     }

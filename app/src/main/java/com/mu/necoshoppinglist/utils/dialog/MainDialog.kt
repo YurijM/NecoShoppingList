@@ -56,7 +56,7 @@ fun MainDialog(
                     }
                 ) {
                     Text(
-                        text = "Cancel"
+                        text = "Отмена"
                     )
                 }
             },
@@ -82,7 +82,7 @@ fun MainDialog(
                             },
                             label = {
                                 Text(
-                                    text = "Name",
+                                    text = "Название",
                                     fontSize = 16.sp
                                 )
                             },

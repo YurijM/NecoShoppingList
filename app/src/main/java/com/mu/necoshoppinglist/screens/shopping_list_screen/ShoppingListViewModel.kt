@@ -74,7 +74,7 @@ class ShoppingListViewModel @Inject constructor(
                 dialogTitle.value = if (item == null) {
                     "New item"
                 } else {
-                    "Edit item"
+                    "Редактирование"
                 }
             }
 

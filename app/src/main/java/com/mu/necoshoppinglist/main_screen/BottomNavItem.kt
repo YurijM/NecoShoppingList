@@ -9,23 +9,23 @@ sealed class BottomNavItem(
     val route: String
 ) {
     object ListItem: BottomNavItem(
-        title = "List",
+        title = "Покупки",
         iconId = R.drawable.ic_list,
         route = Routes.SHOPPING_LIST
     )
     object NoteItem: BottomNavItem(
-        title = "Notes",
+        title = "Заметки",
         iconId = R.drawable.ic_note,
         route = Routes.NOTE_LIST
     )
-    object About: BottomNavItem(
-        title = "About",
-        iconId = R.drawable.ic_about,
-        route = Routes.ABOUT
-    )
     object Settings: BottomNavItem(
-        title = "Settings",
+        title = "Настройки",
         iconId = R.drawable.ic_settings,
         route = Routes.SETTINGS
+    )
+    object About: BottomNavItem(
+        title = "Инфо",
+        iconId = R.drawable.ic_about,
+        route = Routes.ABOUT
     )
 }

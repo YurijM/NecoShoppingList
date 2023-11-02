@@ -6,4 +6,6 @@ sealed class NoteEvent {
     data class OnShowDeleteDialog(val item: NoteItemEntity) : NoteEvent()
     data class OnItemClick(val route: String) : NoteEvent()
     object UnDoneDeleteItem: NoteEvent()
+    data class OnSearchTextChange(val text: String) : NoteEvent()
+    object OnSearchTextClear : NoteEvent()
 }

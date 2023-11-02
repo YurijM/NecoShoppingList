@@ -105,7 +105,7 @@ fun AddItemListScreen(
                         },
                         label = {
                             Text(
-                                text = "Name",
+                                text = "Название",
                                 //fontSize = 16.sp
                             )
                         },
