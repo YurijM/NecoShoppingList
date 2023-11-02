@@ -20,8 +20,8 @@ fun BottomNav(
     val listItems = listOf(
         BottomNavItem.ListItem,
         BottomNavItem.NoteItem,
-        BottomNavItem.About,
-        BottomNavItem.Settings
+        BottomNavItem.Settings,
+        BottomNavItem.About
     )
     BottomAppBar(
         containerColor = Color.White

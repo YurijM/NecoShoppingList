@@ -1,4 +1,4 @@
-package com.mu.necoshoppinglist.screens.settings
+package com.mu.necoshoppinglist.utils
 
 data class ColorItem(
     val color: String,
